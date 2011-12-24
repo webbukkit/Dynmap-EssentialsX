@@ -312,7 +312,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         if(per < 2.0) per = 2.0;
         updperiod = (long)(per*20.0);
         stop = false;
-        getServer().getScheduler().scheduleSyncDelayedTask(this, new MarkerUpdate(), updperiod);
+        getServer().getScheduler().scheduleSyncDelayedTask(this, new MarkerUpdate(), 5*20);
         
         info("version " + this.getDescription().getVersion() + " is activated");
     }
