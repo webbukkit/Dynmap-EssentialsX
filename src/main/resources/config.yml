@@ -19,9 +19,11 @@ layer:
     # Label format - substitute %name% for player's name
     labelfmt: "%name%(home)"
     # (optional) List of visible homes (by user ID) - if non-empty, only these will be shown.
+    # For homes other that the default for a user, the ID is '<userid>:<homeid>'
     # To show all homes on a given world, include "world:<worldname>" in the string list
     visiblemarkers: []
     # (optional) List of hidden homes (by user ID)
+    # For homes other that the default for a user, the ID is '<userid>:<homeid>'
     # To hide all homes on a given world, include "world:<worldname>" in the string list
     hiddenmarkers: []
   warps:
