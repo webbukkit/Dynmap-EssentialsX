@@ -1,0 +1,46 @@
+# Dynmap-Essentials configuration
+#
+update:
+  # Seconds between position updates
+  period: 300.0
+  
+layer:
+  homes:
+    enable: true
+    name: "Homes"
+    # Make home layer hidden by default
+    hidebydefault: false
+    # ordering priority in layer menu (low goes before high - default is 0)
+    layerprio: 20
+    # (optional) set minimum zoom level when mob icons should be visible (0=default, any zoom)
+    minzoom: 0
+    # Default icon for home markers
+    deficon: house
+    # Label format - substitute %name% for player's name
+    labelfmt: "%name%(home)"
+    # (optional) List of visible homes (by user ID) - if non-empty, only these will be shown.
+    # To show all homes on a given world, include "world:<worldname>" in the string list
+    visiblemarkers: []
+    # (optional) List of hidden homes (by user ID)
+    # To hide all homes on a given world, include "world:<worldname>" in the string list
+    hiddenmarkers: []
+  warps:
+    enable: true
+    name: "Warps"
+    # Make warp layer hidden by default
+    hidebydefault: false
+    # ordering priority in layer menu (low goes before high - default is 0)
+    layerprio: 21
+    # (optional) set minimum zoom level when mob icons should be visible (0=default, any zoom)
+    minzoom: 0
+    # Default icon for warp markers
+    deficon: portal
+    # Label format - substitute %name% for warp's name
+    labelfmt: "[%name%]"
+    # (optional) List of visible warps (by warp ID) - if non-empty, only these will be shown.
+    # To show all warps on a given world, include "world:<worldname>" in the string list
+    visiblemarkers: []
+    # (optional) List of hidden warps (by warp ID)
+    # To hide all warps on a given world, include "world:<worldname>" in the string list
+    hiddenmarkers: []
+  
