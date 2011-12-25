@@ -56,9 +56,9 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         Map<String, Marker> markers = new HashMap<String, Marker>();
         
         public Layer(String id, FileConfiguration cfg, String deflabel, String deficon, String deflabelfmt) {
-            set = markerapi.getMarkerSet("commandbook." + id);
+            set = markerapi.getMarkerSet("essentials." + id);
             if(set == null)
-                set = markerapi.createMarkerSet("commandbook."+id, cfg.getString("layer."+id+".name", deflabel), null, false);
+                set = markerapi.createMarkerSet("essentials."+id, cfg.getString("layer."+id+".name", deflabel), null, false);
             else
                 set.setMarkerSetLabel(cfg.getString("layer."+id+".name", deflabel));
             if(set == null) {
