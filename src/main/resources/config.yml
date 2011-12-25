@@ -26,6 +26,8 @@ layer:
     # For homes other that the default for a user, the ID is '<userid>:<homeid>'
     # To hide all homes on a given world, include "world:<worldname>" in the string list
     hiddenmarkers: []
+    # (optional) If set to true, only show homes of online players
+    online-only: false    
   warps:
     enable: true
     name: "Warps"

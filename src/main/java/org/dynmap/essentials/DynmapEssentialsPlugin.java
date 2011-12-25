@@ -1,5 +1,4 @@
 package org.dynmap.essentials;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,14 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -168,17 +166,47 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             return map;
         }
     }
+
+    private class OurPlayerListener extends PlayerListener implements Runnable {
+        @Override
+        public void onPlayerJoin(PlayerJoinEvent event) {
+            getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, 10);
+        }
+        @Override
+        public void onPlayerQuit(PlayerQuitEvent event) {
+            getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, 10);
+        }
+        public void run() {
+            if((!stop) && (users != null)) {
+                homelayer.updateMarkerSet();
+            }
+        }
+    }
     
     private class HomesLayer extends Layer {
+        boolean online_only;
+        
         public HomesLayer(FileConfiguration cfg) {
             super("homes", cfg, "Homes", "house", "%name%(home)");
+            online_only = cfg.getBoolean("layer.homes.online-only", false);
+            if(online_only) {
+                OurPlayerListener lsnr = new OurPlayerListener();
+                
+                getServer().getPluginManager().registerEvent(Type.PLAYER_JOIN, lsnr, Priority.Monitor, DynmapEssentialsPlugin.this);
+                getServer().getPluginManager().registerEvent(Type.PLAYER_QUIT, lsnr, Priority.Monitor, DynmapEssentialsPlugin.this);
+            }
         }
         /* Get current markers, by ID with location */
         public Map<String,Location> getMarkers() {
             HashMap<String,Location> map = new HashMap<String,Location>();
             if(users != null) {
                 Set<String> uids = users.getAllUniqueUsers();
+                Server srv = getServer();
+                
                 for(String uid: uids) {
+                    /* If online only, and not online, skip */
+                    if(online_only && (srv.getPlayerExact(uid) == null))
+                        continue;
                     User u = users.getUser(uid);
                     if(u == null) continue;
                     List<String> homes = u.getHomes();
