@@ -117,7 +117,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                 /* Get location */
                 String id = wname + "/" + name;
 
-                String label = labelfmt.replaceAll("%name%", name);
+                String label = labelfmt.replace("%name%", name);
                     
                 /* See if we already have marker */
                 Marker m = markers.remove(id);
