@@ -2,5 +2,5 @@ name: Dynmap-Essentials
 main: org.dynmap.essentials.DynmapEssentialsPlugin
 version: "${project.version}"
 author: mikeprimm
-softdepend: [ dynmap, Essentials ]
+depend: [ dynmap, Essentials ]
 

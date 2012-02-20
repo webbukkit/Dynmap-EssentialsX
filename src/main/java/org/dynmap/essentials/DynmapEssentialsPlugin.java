@@ -11,13 +11,12 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -167,12 +166,14 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         }
     }
 
-    private class OurPlayerListener extends PlayerListener implements Runnable {
-        @Override
+    private class OurPlayerListener implements Listener, Runnable {
+        @SuppressWarnings("unused")
+        @EventHandler(priority=EventPriority.MONITOR)
         public void onPlayerJoin(PlayerJoinEvent event) {
             getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, 10);
         }
-        @Override
+        @SuppressWarnings("unused")
+        @EventHandler(priority=EventPriority.MONITOR)
         public void onPlayerQuit(PlayerQuitEvent event) {
             getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, 10);
         }
@@ -192,8 +193,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             if(online_only) {
                 OurPlayerListener lsnr = new OurPlayerListener();
                 
-                getServer().getPluginManager().registerEvent(Type.PLAYER_JOIN, lsnr, Priority.Monitor, DynmapEssentialsPlugin.this);
-                getServer().getPluginManager().registerEvent(Type.PLAYER_QUIT, lsnr, Priority.Monitor, DynmapEssentialsPlugin.this);
+                getServer().getPluginManager().registerEvents(lsnr, DynmapEssentialsPlugin.this);
             }
         }
         /* Get current markers, by ID with location */
@@ -262,8 +262,9 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         getServer().getScheduler().scheduleSyncDelayedTask(this, new MarkerUpdate(), updperiod);
     }
     
-    private class OurServerListener extends ServerListener {
-        @Override
+    private class OurServerListener implements Listener {
+        @SuppressWarnings("unused")
+        @EventHandler
         public void onPluginEnable(PluginEnableEvent event) {
             Plugin p = event.getPlugin();
             String name = p.getDescription().getName();
@@ -291,11 +292,12 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             return;
         }
         essentials = (Essentials)p;
+
+        getServer().getPluginManager().registerEvents(new OurServerListener(), this);        
+
         /* If both enabled, activate */
         if(dynmap.isEnabled() && essentials.isEnabled())
             activate();
-        else
-            getServer().getPluginManager().registerEvent(Type.PLUGIN_ENABLE, new OurServerListener(), Priority.Monitor, this);        
     }
 
     private void activate() {
