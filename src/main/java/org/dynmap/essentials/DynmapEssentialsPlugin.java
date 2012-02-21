@@ -255,8 +255,10 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
 
     private class PlayerUpdate implements Runnable {
         public void run() {
-            if(!stop)
+            if(!stop) {
                 updatePlayers();
+                getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, playerupdperiod);
+            }
         }
     }
 
@@ -291,7 +293,6 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             }
             hiddenasserts = newasserts;
         }
-        getServer().getScheduler().scheduleSyncDelayedTask(this, new PlayerUpdate(), playerupdperiod);
     }
     
     private class OurServerListener implements Listener {
@@ -304,6 +305,12 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                 if(dynmap.isEnabled() && essentials.isEnabled())
                     activate();
             }
+        }
+        @SuppressWarnings("unused")
+        @EventHandler(priority=EventPriority.MONITOR)
+        public void onPlayerJoin(PlayerJoinEvent event) {
+            if(playerupdperiod > 0)
+                updatePlayers();
         }
     }
     
@@ -379,10 +386,13 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         /* If hide when hidden */
         if(cfg.getBoolean("hide-when-hidden", true)) {
             /* Set up player update job - based on period */
-            per = cfg.getDouble("update.playerperiod", 5.0);
+            per = cfg.getDouble("update.player-period", 5.0);
             if(per < 2.0) per = 2.0;
             playerupdperiod = (long)(per*20.0);
             getServer().getScheduler().scheduleSyncDelayedTask(this, new PlayerUpdate(), 5*20);
+        }
+        else {
+            playerupdperiod = 0;
         }
         
         info("version " + this.getDescription().getVersion() + " is activated");
