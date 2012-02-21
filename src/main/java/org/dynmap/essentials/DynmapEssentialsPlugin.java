@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -235,6 +236,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     private Layer warplayer;
     
     long updperiod;
+    long playerupdperiod;
     boolean stop;
     
     public static void info(String msg) {
@@ -250,7 +252,14 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                 updateMarkers();
         }
     }
-    
+
+    private class PlayerUpdate implements Runnable {
+        public void run() {
+            if(!stop)
+                updatePlayers();
+        }
+    }
+
     /* Update mob population and position */
     private void updateMarkers() {
         if(users != null) {
@@ -260,6 +269,29 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             warplayer.updateMarkerSet();
         }
         getServer().getScheduler().scheduleSyncDelayedTask(this, new MarkerUpdate(), updperiod);
+    }
+    
+    private Set<String> hiddenasserts = new HashSet<String>();
+    private void updatePlayers() {
+        if(users != null) {
+            HashSet<String> newasserts = new HashSet<String>();
+            Player[] p = getServer().getOnlinePlayers();
+            for(int i = 0; i < p.length; i++) {
+                String pname = p[i].getName();
+                User u = users.getUser(pname);
+                if((u != null) && u.isHidden()) {
+                    newasserts.add(pname);
+                    if(hiddenasserts.remove(pname) == false) {    /* Not hidden before? */
+                        api.assertPlayerInvisibility(pname, true, "Dynmap-Essentials");
+                    }
+                }
+            }
+            for(String id : hiddenasserts) {    /* What is no longer asserted? */
+                api.assertPlayerInvisibility(id, false, "Dynmap-Essentials");
+            }
+            hiddenasserts = newasserts;
+        }
+        getServer().getScheduler().scheduleSyncDelayedTask(this, new PlayerUpdate(), playerupdperiod);
     }
     
     private class OurServerListener implements Listener {
@@ -337,12 +369,21 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         if(warps != null)
             warplayer = new WarpsLayer(cfg);
         
-        /* Set up update job - based on periond */
+        /* Set up update job - based on period */
         double per = cfg.getDouble("update.period", 5.0);
         if(per < 2.0) per = 2.0;
         updperiod = (long)(per*20.0);
         stop = false;
         getServer().getScheduler().scheduleSyncDelayedTask(this, new MarkerUpdate(), 5*20);
+
+        /* If hide when hidden */
+        if(cfg.getBoolean("hide-when-hidden", true)) {
+            /* Set up player update job - based on period */
+            per = cfg.getDouble("update.playerperiod", 5.0);
+            if(per < 2.0) per = 2.0;
+            playerupdperiod = (long)(per*20.0);
+            getServer().getScheduler().scheduleSyncDelayedTask(this, new PlayerUpdate(), 5*20);
+        }
         
         info("version " + this.getDescription().getVersion() + " is activated");
     }

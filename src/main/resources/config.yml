@@ -3,6 +3,8 @@
 update:
   # Seconds between position updates
   period: 300.0
+  # Seconds between player visibility checks
+  player-period: 5.0
   
 layer:
   homes:
@@ -47,4 +49,6 @@ layer:
     # (optional) List of hidden warps (by warp ID)
     # To hide all warps on a given world, include "world:<worldname>" in the string list
     hiddenmarkers: []
-  
+
+# Hide player on dynmap when hidden by Essentials  
+hide-when-hidden: true
