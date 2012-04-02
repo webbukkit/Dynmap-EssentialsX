@@ -145,8 +145,8 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
 
     private class WarpsLayer extends Layer {
 
-        public WarpsLayer(FileConfiguration cfg) {
-            super("warps", cfg, "Warps", "portal", "[%name%]");
+        public WarpsLayer(FileConfiguration cfg, String fmt) {
+            super("warps", cfg, "Warps", "portal", fmt);
         }
         /* Get current markers, by ID with location */
         public Map<String,Location> getMarkers() {
@@ -188,8 +188,8 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     private class HomesLayer extends Layer {
         boolean online_only;
         
-        public HomesLayer(FileConfiguration cfg) {
-            super("homes", cfg, "Homes", "house", "%name%(home)");
+        public HomesLayer(FileConfiguration cfg, String fmt) {
+            super("homes", cfg, "Homes", "house", fmt);
             online_only = cfg.getBoolean("layer.homes.online-only", false);
             if(online_only) {
                 OurPlayerListener lsnr = new OurPlayerListener();
@@ -371,10 +371,10 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         
         /* Now, add marker set for homes */
         if(users != null)
-            homelayer = new HomesLayer(cfg);
+            homelayer = new HomesLayer(cfg, "%name%(home)");
         /* Now, add marker set for warps */
         if(warps != null)
-            warplayer = new WarpsLayer(cfg);
+            warplayer = new WarpsLayer(cfg, "[%name%]");
         
         /* Set up update job - based on period */
         double per = cfg.getDouble("update.period", 5.0);
