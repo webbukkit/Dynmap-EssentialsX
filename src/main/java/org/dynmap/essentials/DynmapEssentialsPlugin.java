@@ -42,6 +42,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     Essentials essentials;
     Warps warps;
     UserMap users;
+    boolean reload = false;
     
     FileConfiguration cfg;
     
@@ -359,6 +360,12 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             info("Essentials Homes not found - support disabled");
             
         /* Load configuration */
+        if(reload) {
+            reloadConfig();
+        }
+        else {
+            reload = true;
+        }
         FileConfiguration cfg = getConfig();
         cfg.options().copyDefaults(true);   /* Load defaults, if needed */
         this.saveConfig();  /* Save updates, if needed */
