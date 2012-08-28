@@ -1,4 +1,5 @@
 package org.dynmap.essentials;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -338,6 +339,12 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         /* If both enabled, activate */
         if(dynmap.isEnabled() && essentials.isEnabled())
             activate();
+        
+        try { 
+            MetricsLite ml = new MetricsLite(this);
+            ml.start();
+        } catch (IOException iox) {
+        }
     }
 
     private void activate() {
@@ -362,6 +369,20 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         /* Load configuration */
         if(reload) {
             reloadConfig();
+            if(homelayer != null) {
+                if(homelayer.set != null) {
+                    homelayer.set.deleteMarkerSet();
+                    homelayer.set = null;
+                }
+                homelayer = null;
+            }
+            if(warplayer != null) {
+                if(warplayer.set != null) {
+                    warplayer.set.deleteMarkerSet();
+                    warplayer.set = null;
+                }
+                warplayer = null;
+            }
         }
         else {
             reload = true;
