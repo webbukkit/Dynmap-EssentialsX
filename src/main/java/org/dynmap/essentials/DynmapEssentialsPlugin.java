@@ -278,17 +278,14 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     private Set<String> hiddenasserts = new HashSet<String>();
     private void updatePlayers() {
         if(users != null) {
+            List<String> vanished = essentials.getVanishedPlayers();
             HashSet<String> newasserts = new HashSet<String>();
-            Player[] p = getServer().getOnlinePlayers();
-            for(int i = 0; i < p.length; i++) {
-                String pname = p[i].getName();
-                User u = users.getUser(pname);
-                if((u != null) && u.isHidden()) {
-                    newasserts.add(pname);
-                    if(hiddenasserts.remove(pname) == false) {    /* Not hidden before? */
-                        api.assertPlayerInvisibility(pname, true, "Dynmap-Essentials");
-                    }
+            for(String van : vanished) {
+                if(hiddenasserts.contains(van) == false) {
+                    api.assertPlayerInvisibility(van, true, "Dynmap-Essentials");
                 }
+                newasserts.add(van);
+                hiddenasserts.remove(van);  /* Remove from previous */
             }
             for(String id : hiddenasserts) {    /* What is no longer asserted? */
                 api.assertPlayerInvisibility(id, false, "Dynmap-Essentials");
