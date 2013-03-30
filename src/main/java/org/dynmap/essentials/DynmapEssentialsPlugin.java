@@ -34,8 +34,7 @@ import com.earth2me.essentials.UserMap;
 import com.earth2me.essentials.Warps;
 
 public class DynmapEssentialsPlugin extends JavaPlugin {
-    private static final Logger log = Logger.getLogger("Minecraft");
-    private static final String LOG_PREFIX = "[Dynmap-Essentials] ";
+    private static Logger log;
 
     Plugin dynmap;
     DynmapAPI api;
@@ -46,6 +45,11 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     boolean reload = false;
     
     FileConfiguration cfg;
+    
+    @Override
+    public void onLoad() {
+        log = this.getLogger();
+    }
     
     private abstract class Layer {
         MarkerSet set;
@@ -242,10 +246,10 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     boolean stop;
     
     public static void info(String msg) {
-        log.log(Level.INFO, LOG_PREFIX + msg);
+        log.log(Level.INFO, msg);
     }
     public static void severe(String msg) {
-        log.log(Level.SEVERE, LOG_PREFIX + msg);
+        log.log(Level.SEVERE, msg);
     }
 
     private class MarkerUpdate implements Runnable {
