@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.dynmap</groupId>
   <artifactId>Dynmap-Essentials</artifactId>
-  <version>0.50</version>
+  <version>0.60</version>
   <build>
   	  <resources>
 		<resource>
@@ -83,12 +83,12 @@
   	<dependency>
   		<groupId>org.bukkit</groupId>
   		<artifactId>bukkit</artifactId>
-  		<version>1.4.5-R1.0</version>
+  		<version>1.4.7-R1.0</version>
   	</dependency>
   	<dependency>
   		<groupId>org.dynmap</groupId>
   		<artifactId>dynmap-api</artifactId>
-  		<version>1.3</version>
+  		<version>1.8</version>
   	</dependency>
   	<dependency>
   		<groupId>com.earth2me</groupId>
