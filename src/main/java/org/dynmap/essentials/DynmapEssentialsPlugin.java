@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -158,7 +157,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         public Map<String,Location> getMarkers() {
             HashMap<String,Location> map = new HashMap<String,Location>();
             if(warps != null) {
-                Collection<String> wn = warps.getWarpNames();
+                Collection<String> wn = warps.getList();
                 for(String n: wn) {
                     Location loc;
                     try {
@@ -174,12 +173,10 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     }
 
     private class OurPlayerListener implements Listener, Runnable {
-        @SuppressWarnings("unused")
         @EventHandler(priority=EventPriority.MONITOR)
         public void onPlayerJoin(PlayerJoinEvent event) {
             getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, 10);
         }
-        @SuppressWarnings("unused")
         @EventHandler(priority=EventPriority.MONITOR)
         public void onPlayerQuit(PlayerQuitEvent event) {
             getServer().getScheduler().scheduleSyncDelayedTask(DynmapEssentialsPlugin.this, this, 10);
@@ -299,7 +296,6 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     }
     
     private class OurServerListener implements Listener {
-        @SuppressWarnings("unused")
         @EventHandler
         public void onPluginEnable(PluginEnableEvent event) {
             Plugin p = event.getPlugin();
@@ -309,7 +305,6 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                     activate();
             }
         }
-        @SuppressWarnings("unused")
         @EventHandler(priority=EventPriority.MONITOR)
         public void onPlayerJoin(PlayerJoinEvent event) {
             if(playerupdperiod > 0)
