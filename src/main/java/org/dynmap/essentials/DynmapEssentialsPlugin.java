@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.dynmap.DynmapAPI;
+import org.dynmap.DynmapWebChatEvent;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
@@ -309,6 +310,16 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         public void onPlayerJoin(PlayerJoinEvent event) {
             if(playerupdperiod > 0)
                 updatePlayers();
+        }
+        @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+        public void onDynmapWebChat(DynmapWebChatEvent evt) {
+            String name = evt.getName();    // Get player name
+            if ((users != null) && (name != null)) {
+                User u = users.getUser(name);
+                if ((u != null) && u.isMuted()) {
+                    evt.setCancelled(true);
+                }
+            }
         }
     }
     

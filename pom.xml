@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.dynmap</groupId>
+  <groupId>us.dynmap</groupId>
   <artifactId>Dynmap-Essentials</artifactId>
   <version>0.70</version>
   <build>
@@ -61,9 +61,9 @@
   		<version>1.6.4-R1.0</version>
   	</dependency>
   	<dependency>
-  		<groupId>org.dynmap</groupId>
+  		<groupId>us.dynmap</groupId>
   		<artifactId>dynmap-api</artifactId>
-  		<version>1.9</version>
+  		<version>1.9.4</version>
   	</dependency>
   	<dependency>
   		<groupId>com.earth2me</groupId>
