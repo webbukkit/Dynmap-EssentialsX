@@ -316,7 +316,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             String name = evt.getName();    // Get player name
             if ((users != null) && (name != null)) {
                 User u = users.getUser(name);
-                if ((u != null) && u.isMuted()) {
+                if ((u != null) && (u.isMuted() || u.isBanned())) {
                     evt.setCancelled(true);
                 }
             }
