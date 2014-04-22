@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>us.dynmap</groupId>
   <artifactId>Dynmap-Essentials</artifactId>
-  <version>0.70</version>
+  <version>0.80-SNAPSHOT</version>
   <build>
   	  <resources>
 		<resource>
@@ -64,6 +64,7 @@
   		<groupId>us.dynmap</groupId>
   		<artifactId>dynmap-api</artifactId>
   		<version>1.9.4</version>
+  		<scope>provided</scope>
   	</dependency>
   	<dependency>
   		<groupId>com.earth2me</groupId>
