@@ -42,7 +42,7 @@
 			<snapshots>
 			</snapshots>
 			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/repositories/releases/</url>
+			<url>http://repo.bukkit.org/content/groups/public/</url>
 		</repository>
 		<repository>
 			<releases>
@@ -56,11 +56,6 @@
   
   <dependencies>
   	<dependency>
-  		<groupId>org.bukkit</groupId>
-  		<artifactId>bukkit</artifactId>
-  		<version>1.6.4-R1.0</version>
-  	</dependency>
-  	<dependency>
   		<groupId>us.dynmap</groupId>
   		<artifactId>dynmap-api</artifactId>
   		<version>1.9.4</version>
@@ -69,9 +64,14 @@
   	<dependency>
   		<groupId>com.earth2me</groupId>
   		<artifactId>Essentials</artifactId>
-  		<version>2.12.2</version>
+  		<version>2.14.14</version>
   		<scope>system</scope>
-  		<systemPath>${project.basedir}/Essentials-2.12.2.jar</systemPath>
+  		<systemPath>${project.basedir}/Essentials-2.14.14.jar</systemPath>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.bukkit</groupId>
+  		<artifactId>bukkit</artifactId>
+  		<version>1.7.9-R0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
   <properties>

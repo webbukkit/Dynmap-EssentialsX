@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -205,12 +206,12 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         public Map<String,Location> getMarkers() {
             HashMap<String,Location> map = new HashMap<String,Location>();
             if(users != null) {
-                Set<String> uids = users.getAllUniqueUsers();
+                Set<UUID> uids = users.getAllUniqueUsers();
                 Server srv = getServer();
                 
-                for(String uid: uids) {
+                for(UUID uid: uids) {
                     /* If online only, and not online, skip */
-                    if(online_only && (srv.getPlayerExact(uid) == null))
+                    if(online_only && (srv.getPlayer(uid) == null))
                         continue;
                     User u = users.getUser(uid);
                     if(u == null) continue;
@@ -221,7 +222,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                             Location loc = u.getHome(home);
                             if(loc != null) {
                                 if(home.equals("home"))
-                                    map.put(uid, loc);
+                                    map.put(uid.toString(), loc);
                                 else
                                     map.put(uid+":"+home, loc);
                             }
@@ -316,7 +317,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
             String name = evt.getName();    // Get player name
             if ((users != null) && (name != null)) {
                 User u = users.getUser(name);
-                if ((u != null) && (u.isMuted() || u.isBanned())) {
+                if ((u != null) && (u.isMuted() || u.getBase().isBanned())) {
                     evt.setCancelled(true);
                 }
             }
