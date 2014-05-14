@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -44,6 +45,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
     Warps warps;
     UserMap users;
     boolean reload = false;
+    private boolean essentials_uses_uuids = false;
     
     FileConfiguration cfg;
     
@@ -202,18 +204,57 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(lsnr, DynmapEssentialsPlugin.this);
             }
         }
+        private User getByUUID(Server srv, UUID uid) {
+            /* If online only, and not online, skip */
+            if(online_only && (srv.getPlayer(uid) == null))
+                return null;
+            return users.getUser((UUID) uid);
+        }
+        private User getByName(Server srv, String uid) {
+            /* If online only, and not online, skip */
+            if(online_only && (srv.getPlayer(uid) == null))
+                return null;
+            return users.getUser(uid);
+        }
+        private Set<?> getAllUIDs(Server srv) {
+            if (online_only) {
+                Player[] p = srv.getOnlinePlayers();
+                if (essentials_uses_uuids) {
+                    Set<UUID> rslt = new HashSet<UUID>();
+                    for (Player pp : p) {
+                        rslt.add(pp.getUniqueId());
+                    }
+                    return rslt;
+                }
+                else {
+                    Set<String> rslt = new HashSet<String>();
+                    for (Player pp : p) {
+                        rslt.add(pp.getName());
+                    }
+                    return rslt;
+                }
+            }
+            else {
+                return users.getAllUniqueUsers();
+            }
+        }
         /* Get current markers, by ID with location */
         public Map<String,Location> getMarkers() {
             HashMap<String,Location> map = new HashMap<String,Location>();
             if(users != null) {
-                Set<UUID> uids = users.getAllUniqueUsers();
+                Set<?> uids = users.getAllUniqueUsers();
                 Server srv = getServer();
                 
-                for(UUID uid: uids) {
-                    /* If online only, and not online, skip */
-                    if(online_only && (srv.getPlayer(uid) == null))
-                        continue;
-                    User u = users.getUser(uid);
+                for(Object uid: uids) {
+                    User u;
+                    if (uid instanceof UUID) {
+                        essentials_uses_uuids = true;
+                        u = getByUUID(srv, (UUID) uid);
+                    }
+                    else {
+                        essentials_uses_uuids = false;
+                        u = getByName(srv, (String) uid);
+                    }
                     if(u == null) continue;
                     List<String> homes = u.getHomes();
                     if(homes == null) continue;
@@ -222,9 +263,9 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
                             Location loc = u.getHome(home);
                             if(loc != null) {
                                 if(home.equals("home"))
-                                    map.put(uid.toString(), loc);
+                                    map.put(u.getName(), loc);
                                 else
-                                    map.put(uid+":"+home, loc);
+                                    map.put(u.getName() + ":" + home, loc);
                             }
                         } catch (Exception x) {}
                     }
