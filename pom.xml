@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>us.dynmap</groupId>
   <artifactId>Dynmap-Essentials</artifactId>
-  <version>0.80-SNAPSHOT</version>
+  <version>0.80</version>
   <build>
   	  <resources>
 		<resource>
