@@ -218,7 +218,7 @@ public class DynmapEssentialsPlugin extends JavaPlugin {
         }
         private Set<?> getAllUIDs(Server srv) {
             if (online_only) {
-                Player[] p = srv.getOnlinePlayers();
+                Collection<? extends Player> p = srv.getOnlinePlayers();
                 if (essentials_uses_uuids) {
                     Set<UUID> rslt = new HashSet<UUID>();
                     for (Player pp : p) {
