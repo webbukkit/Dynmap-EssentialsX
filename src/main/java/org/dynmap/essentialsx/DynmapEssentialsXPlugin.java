@@ -27,8 +27,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.dynmap.DynmapAPI;
 import org.dynmap.DynmapWebChatEvent;
-import org.dynmap.bukkit.DynmapPlugin.FeatureChart;
-import org.dynmap.bukkit.DynmapPlugin.MapChart;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
