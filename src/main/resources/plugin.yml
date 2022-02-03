@@ -1,6 +1,7 @@
-name: Dynmap-Essentials
-main: org.dynmap.essentials.DynmapEssentialsPlugin
+name: Dynmap-EssentialsX
+main: org.dynmap.essentialsx.DynmapEssentialsXPlugin
 version: "${project.version}"
 author: mikeprimm
 depend: [ dynmap, Essentials ]
+api-version: 1.13
 
