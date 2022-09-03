@@ -129,7 +129,12 @@ public class DynmapEssentialsXPlugin extends JavaPlugin {
 				/* Get location */
 				String id = wname + "/" + name;
 
-				String label = labelfmt.replace("%name%", name);
+				/* Separate player name and home/warp name */
+				int separation = name.indexOf(":");
+				String playername = separation < 0 ? "" : name.substring(0, separation);
+				String pointname = separation < 0 ? name : name.substring(separation + 1);
+
+				String label = labelfmt.replace("%player%", playername).replace("%name%", pointname);
 
 				/* See if we already have marker */
 				Marker m = markers.remove(id);
@@ -272,10 +277,7 @@ public class DynmapEssentialsXPlugin extends JavaPlugin {
 						try {
 							Location loc = u.getHome(home);
 							if (loc != null) {
-								if (home.equals("home"))
-									map.put(u.getName(), loc);
-								else
-									map.put(u.getName() + ":" + home, loc);
+								map.put(u.getName() + ":" + home, loc);
 							}
 						} catch (Exception x) {
 						}
@@ -460,7 +462,7 @@ public class DynmapEssentialsXPlugin extends JavaPlugin {
 
 		/* Now, add marker set for homes */
 		if (users != null)
-			homelayer = new HomesLayer(cfg, "%name%(home)");
+			homelayer = new HomesLayer(cfg, "%player%'s %name% (home)");
 		/* Now, add marker set for warps */
 		if (warps != null)
 			warplayer = new WarpsLayer(cfg, "[%name%]");
